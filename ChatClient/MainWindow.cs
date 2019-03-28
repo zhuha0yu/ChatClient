@@ -55,7 +55,8 @@ namespace ChatClient
             {               
                 return 1;
             }
-
+            Thread recvmess = new Thread(receivemessage);
+            recvmess.Start(ClientSocket);
             return 0;
 
 
@@ -232,14 +233,22 @@ namespace ChatClient
                     }));
                     
                     break;
+                case "Message":
+                    textBox_receive.Invoke(new EventHandler(delegate
+                    {
+
+
+                        textBox_receive.AppendText(root.SelectSingleNode("Time").InnerText
+                            + Environment.NewLine 
+                            + root.SelectSingleNode("Sender").InnerText
+                            + " : " 
+                            + messageContent 
+                            );
+                        textBox_receive.AppendText(Environment.NewLine);
+                    }));
+                    break;
             }
-            textBox_receive.Invoke(new EventHandler(delegate
-            {
-
-
-                textBox_receive.AppendText(DateTime.Now.ToString() + Environment.NewLine + "你收到了一条信息 : " + messageContent+"    "+messageType);
-                textBox_receive.AppendText(Environment.NewLine);
-            }));
+            
         }
     }
     public class user
